@@ -20,6 +20,30 @@ def quick_sort(numbers: List[int], start_index: int, end_index: int) -> List[int
     return numbers
 
 
+def quick_sort_retry(numbers: List[int]) -> List[int]:
+    def _quick_sort(numbers: List[int], start_index: int, end_index: int) -> List[int]:
+        if start_index >= end_index:
+            return numbers
+
+        pivot = numbers[end_index]
+        i = start_index - 1
+        for j in range(start_index, end_index):
+            if numbers[j] < pivot:
+                i += 1
+                numbers[i], numbers[j] = numbers[j], numbers[i]
+
+        numbers[i+1], numbers[end_index] = numbers[end_index], numbers[i+1]
+
+        numbers = _quick_sort(numbers, start_index, i)
+        numbers = _quick_sort(numbers, i+1, end_index)
+
+        return numbers
+
+    numbers = _quick_sort(numbers, 0, len(numbers)-1)
+
+    return numbers
+
+
 def partition(numbers: List[int], low: int, high: int) -> int:
     pivot = numbers[high]
     i = low - 1
@@ -47,4 +71,4 @@ if __name__ == '__main__':
     import random
     nums = [random.randint(0, 1000) for _ in range(10)]
     #print(quick_sort(nums, 0, len(nums)-1))
-    print(quick_sort_by_sakai(nums))
+    print(quick_sort_retry(nums))
