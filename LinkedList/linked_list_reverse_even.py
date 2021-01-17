@@ -1,5 +1,5 @@
 from __future__ import annotations
-from typing import Any
+from typing import Any, Optional
 
 
 class Node(object):
@@ -103,7 +103,7 @@ class LinkedList(object):
     #         last_node.next = reverse_list.head
 
     def reverse_even(self) -> None:
-        def _reverse_even(head: Node, previous_node: Node):
+        def _reverse_even(head: Node, previous_node: Node) -> Optional[Node]:
             if head is None:
                 return None
 
