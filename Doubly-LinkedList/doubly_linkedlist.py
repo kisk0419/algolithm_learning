@@ -3,10 +3,10 @@ from typing import Any, Optional
 
 
 class Node(object):
-    def __init__(self, data: Any) -> None:
-        self.prev = None
+    def __init__(self, data: Any, prev_node: Node = None, next_node: Node = None) -> None:
+        self.prev = prev_node
         self.data = data
-        self.next = None
+        self.next = next_node
 
 
 class DoublyLinkedList(object):
@@ -72,6 +72,72 @@ class DoublyLinkedList(object):
             return
            
 
+    def reverse_iter_kk(self) -> None:
+        current_node = self.head
+        if current_node is None:
+            return
+
+        while current_node.next:
+            prev_node = current_node.prev
+            next_node = current_node.next
+            current_node.next = prev_node
+            current_node.prev = next_node
+            prev_node = current_node
+            current_node = next_node
+        self.head = current_node
+        current_node.next = current_node.prev
+        current_node.prev = None
+
+
+    def reverse_iter(self) -> None:
+        previous_node = None
+        current_node = self.head
+        
+        while current_node:
+            previous_node = current_node.prev
+            current_node.prev = current_node.next
+            current_node.next = previous_node
+            current_node = current_node.prev
+
+        if previous_node:
+            self.head = previous_node.prev
+        
+
+    def reverse_recursive_kk(self) -> None:
+        def _reverse_recursive(prev_node: Node, current_node: Node) -> Node:
+            if current_node.next is None:
+                return current_node
+
+            next_node = current_node.next
+            current_node.next = prev_node
+            current_node.prev = next_node
+
+            return _reverse_recursive(current_node, next_node)    
+        
+        if self.head is None:
+            return
+
+        self.head = _reverse_recursive(None, self.head)
+        self.head.next = self.head.prev
+        self.head.prev = None
+
+
+    def reverse_recursive(self) -> None:
+        def _reverse_recursive(current_node: Node) -> Optional[Node]:
+            if current_node is None:
+                return None
+
+            previous_node = current_node.prev
+            current_node.prev = current_node.next
+            current_node.next = previous_node
+            
+            if current_node.prev is None:
+                return current_node
+
+            return _reverse_recursive(current_node.prev)    
+        
+        self.head = _reverse_recursive(self.head)
+        
 
     def print(self) -> None:
         current_node = self.head
@@ -82,15 +148,15 @@ class DoublyLinkedList(object):
 
 if __name__ == '__main__':
     l = DoublyLinkedList()
+    l.append(0)
     l.append(1)
     l.append(2)
     l.append(3)
     l.print()
-    l.insert(0)
     print('#####')
+    l.reverse_iter()
     l.print()
-    l.remove(0)
-    l.remove(3)
     print('#####')
+    l.reverse_recursive()
     l.print()
-    
+
