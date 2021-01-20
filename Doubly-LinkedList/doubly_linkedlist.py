@@ -139,6 +139,44 @@ class DoublyLinkedList(object):
         self.head = _reverse_recursive(self.head)
         
 
+    def sort_kk(self) -> DoublyLinkedList:
+        current_node = self.head
+        tail_node = self.head
+        
+        if self.head is None:
+            return self
+
+        while tail_node.next:
+            tail_node = tail_node.next
+
+        while self.head != tail_node:
+            while current_node.next and current_node != tail_node:
+                if current_node.data > current_node.next.data:
+                    current_node.data, current_node.next.data = current_node.next.data, current_node.data
+                current_node = current_node.next
+            tail_node = current_node.prev
+            current_node = self.head
+            
+        return self
+
+
+    def sort(self) -> None:
+        if self.head is None:
+            return
+        
+        current_node = self.head
+        
+        while current_node.next:
+            next_node = current_node.next
+            
+            while next_node:
+                if current_node.data > next_node.data:
+                    current_node.data, next_node.data = next_node.data, current_node.data
+                next_node = next_node.next
+
+            current_node = current_node.next
+            
+        
     def print(self) -> None:
         current_node = self.head
         while current_node:
@@ -148,15 +186,13 @@ class DoublyLinkedList(object):
 
 if __name__ == '__main__':
     l = DoublyLinkedList()
-    l.append(0)
     l.append(1)
+    l.append(10)
+    l.append(5)
     l.append(2)
-    l.append(3)
+    l.append(9)
     l.print()
     print('#####')
-    l.reverse_iter()
+    l.sort()
     l.print()
-    print('#####')
-    l.reverse_recursive()
-    l.print()
-
+    
