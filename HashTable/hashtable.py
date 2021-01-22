@@ -47,6 +47,7 @@ class HashTable(object):
             print()
     
 
+
 if __name__ == '__main__':
     hash_table = HashTable()
     hash_table['sns'] = 'Youtube'
