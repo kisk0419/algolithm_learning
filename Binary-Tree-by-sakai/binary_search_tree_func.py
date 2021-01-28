@@ -37,6 +37,33 @@ def search(node: Node, value: int) -> bool:
         return search(node.right, value)
 
 
+def min_value(node: Node) -> Node:
+    current_node = node
+    while current_node.left:
+        current_node = current_node.left
+    return current_node
+
+
+def remove(node: Node, value: int) -> Node:
+    if node is None:
+        return None
+
+    if value < node.value:
+        node.left = remove(node.left, value)
+    elif node.value < value:
+        node.right = remove(node.right, value)
+    else:
+        if node.left is None:
+            return node.right
+        elif node.right is None:
+            return node.left
+        
+        temp = min_value(node.right)
+        node.value = temp.value
+        node.right = remove(node.right, temp.value)
+        
+    return node
+
 
 if __name__ == '__main__':
     root = None
@@ -44,5 +71,5 @@ if __name__ == '__main__':
     for data in datas:
         root = insert(root, data)
 
+    remove(root, 3)
     inorder(root)
-    print(search(root, 11))
