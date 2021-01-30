@@ -1,44 +1,98 @@
-from __future__ import annotations
 
 class Node(object):
-
-    def __init__(self, data: int, parent_node: Node = None, 
-        left_node: Node = None, right_node: Node = None):
-        
-        self.parent = parent_node
-        self.left = left_node
-        self.right = right_node
-        self.data = data
-
     
+    def __init__(self, value: int) -> None:
+        self.value = value
+        self.left = None
+        self.right = None
+
+
 class BinarySearchTree(object):
+    
+    def __init__(self) -> None:
+        self.root = None
 
-    def __init__(self, root_node: Node = None):
-        self.root = root_node
 
+    def insert(self, value: int) -> None:
+        def _insert(node: Node, value: int) -> Node:
+            if not node:
+                return Node(value)
 
-    def insert(self, data: int) -> Node:
-        def _insert(current_node: Node, data: int) -> Node:
-            if not current_node:
-                return Node(data)
-
-            if data < current_node.data:
-                current_node.left = _insert(current_node.left, data)
+            if value < node.value:
+                node.left = _insert(node.left, value)
             else:
-                current_node.right = _insert(current_node.right, data)
-            return current_node
+                node.right = _insert(node.right, value)
+            return node
 
-        self.root = _insert(self.root, data)
-        
+        self.root = _insert(self.root, value)
+
+
+    def inorder(self) -> None:
+        def _inorder(node: Node) -> None:
+            if not node:
+                return
+            _inorder(node.left)
+            print(node.value)
+            _inorder(node.right)
+
+        _inorder(self.root)
+
+
+    def search(self, value: int) -> bool:
+        def _search(node: Node, value: int) -> bool:
+            if node is None:
+                return False
+            
+            if node.value == value:
+                return True
+            elif value < node.value:
+                return _search(node.left, value)
+            else:
+                return _search(node.right, value)
+
+        return _search(self.root, value)
+
+
+    def min_value(self, node: Node) -> Node:
+        current_node = node
+        while current_node.left:
+            current_node = current_node.left
+        return current_node
+
+
+    def remove(self, value: int) -> None:
+        def _remove(node: Node, value: int) -> Node:
+            if node is None:
+                return None
+
+            if value < node.value:
+                node.left = _remove(node.left, value)
+            elif node.value < value:
+                node.right = _remove(node.right, value)
+            else:
+                if node.left is None:
+                    return node.right
+                elif node.right is None:
+                    return node.left
+                
+                temp = self.min_value(node.right)
+                node.value = temp.value
+                node.right = _remove(node.right, temp.value)
+                
+            return node
+
+        self.root = _remove(self.root, value)
+
 
 if __name__ == '__main__':
-    b = BinarySearchTree()
+    bst = BinarySearchTree()
     datas = [3, 6, 5, 7, 1, 10, 2]
     for data in datas:
-        b.insert(data)
+        bst.insert(data)
 
-    print(b.root.data)
-    print(b.root.left.right.data)
-    print(b.root.right.left.data)
-
-        
+    bst.inorder()
+    print(bst.search(6))
+    print(bst.search(4))
+    bst.remove(6)
+    print('###########')
+    bst.inorder()
