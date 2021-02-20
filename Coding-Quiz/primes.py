@@ -76,16 +76,16 @@ def generate_primes_by_sakai_v3(number: int) -> Generator[int, None, None]:
             cache[y] = False
 
 if __name__ == '__main__':
-    print(generate_primes_v1(50))
-    print(generate_primes_by_sakai_v1(50))
-    print(generate_primes_by_sakai_v2(50))
+    print(generate_primes_v1(1000))
+    print(generate_primes_by_sakai_v1(1000))
+    print(generate_primes_by_sakai_v2(1000))
 
     start = time.time()
-    for i in generate_primes_by_sakai_v3(50):
+    for i in generate_primes_by_sakai_v3(10000):
         pass
     print(f'duration={time.time() - start}')
 
     start = time.time()
-    for i in generate_primes_v2(50):
+    for i in generate_primes_v2(10000):
         pass
     print(f'duration={time.time() - start}')
