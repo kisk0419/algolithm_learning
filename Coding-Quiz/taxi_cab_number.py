@@ -13,9 +13,8 @@ def taxi_cab_number(max_answer_num: int, match_answer_num: int = 2) -> List[Tupl
             for j in range(i + 1, max_param):
                 if  i**3 + j**3 == num:
                     r[1].append((i, j))
-                    if len(r[1]) == match_answer_num:
-                        result.append(r)
-                        break
+        if len(r[1]) == match_answer_num:
+            result.append(r)
         num += 1
     return result
 
